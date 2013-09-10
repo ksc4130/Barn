@@ -36,18 +36,8 @@ board.on("ready", function() {
         pin: 13
     });
 
-    // "on" turns the led _on_
-    led.on();
-
-    // "off" turns the led _off_
     led.off();
 
-    // Turn the led back on after 3 seconds (shown in ms)
-    this.wait( 3000, function() {
-
-        led.on();
-
-    });
 });
 
 //
