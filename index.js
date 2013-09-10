@@ -145,4 +145,4 @@ primus.save('primus.js');
 //
 // Everything is ready, listen to a port number to start the server.
 //
-server.listen(+argh.port || 8080);
+server.listen(+argh.port || 4130);
