@@ -1,0 +1,22 @@
+{
+    "name": "Barn",
+    "version": "0.0.1",
+    "description": "Barn",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js"
+    },
+    "keywords": [],
+    "author": "Kyle Curren",
+    "license": "MIT",
+    "dependencies": {
+        "johnny-five": "*",
+        "argh": "*",
+        "primus": "*",
+        "ws": "*"
+    },
+    "engines": {
+        "node": "0.10.x"
+    }
+}

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Primus</title>
+    <script src="/primus/primus.js"></script>
+    <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.css" />
+    <style>
+        body {padding-top: 50px;}
+    </style>
+</head>
+<body>
+<article class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <button id="btnSwitch" class="btn btn-block">Off</button>
+        </div>
+    </div>
+</article>
+
+<script>
+    var primus,
+        light = false,
+        btnSwitch = document.getElementById('btnSwitch');
+
+    btnSwitch.onclick = function () {
+        light = !light;
+        if(light) {
+            btnSwitch.innerText = 'On';
+            btnSwitch.className = 'btn btn-primary btn-block';
+        }
+        else {
+            btnSwitch.innerText = 'Off';
+            btnSwitch.className = 'btn btn-block';
+        }
+
+        primus.write((Function('return '+ light))());
+    };
+
+    function log(name, header, message) {
+        console.log(name, header, message);
+    }
+
+    (function () {
+        if (primus) primus.end();
+
+        primus = new Primus();
+
+        primus.on('reconnect', function reconnect(opts) {
+            log('reconnect', 'Reconnecting', 'We are <strong>scheduling</strong> a new reconnect attempt. This is attempt <strong>'+ opts.attempt +'</strong> and will trigger a reconnect operation in <strong>'+ opts.timeout +'</strong> ms.');
+            //document.getElementById('connect').innerHTML = 'reconnecting';
+        });
+
+        primus.on('reconnect', function reconnect() {
+            log('reconnect', 'Reconnect', 'Starting the reconnect attempt, hopefully we get a connection!');
+        });
+
+        primus.on('online', function online() {
+            log('network', 'Online', 'We have regained control over our internet connection');
+        });
+
+        primus.on('offline', function online() {
+            log('network', 'Offline', 'We lost our internet connection');
+        });
+
+        primus.on('open', function open() {
+            log('open', 'Open', 'The connection has been established.');
+            //document.getElementById('connect').innerHTML = 'connected';
+        });
+
+        primus.on('error', function error(err) {
+            log('error', 'Erorr', 'An unknown error has occured <code>'+ err.message +'</code>');
+        });
+
+        primus.on('data', function incoming(data) {
+            //log('data', 'Received data', 'string' === typeof data ? data : '<pre><code>'+ JSON.stringify(data, null, 2) +'</code></pre>');
+            //console.log('data', data);
+            if(data) {
+                btnSwitch.innerText = 'On';
+                btnSwitch.className = 'btn btn-primary btn-block';
+            }
+            else {
+                btnSwitch.innerText = 'Off';
+                btnSwitch.className = 'btn btn-block';
+            }
+
+            light = data;
+        });
+
+        primus.on('end', function end() {
+            //log('end', 'End', 'The connection has closed.');
+            //document.getElementById('connect').innerHTML = 'connect';
+        });
+    })();
+</script>
