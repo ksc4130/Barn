@@ -33,7 +33,7 @@ board.on("ready", function() {
 
     // Create a standard `led` hardware instance
     led = new five.Led({
-        pin: 13
+        pin: 8
     });
 
     led.off();
