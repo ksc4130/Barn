@@ -24,14 +24,18 @@ var argh = require('argh').argv
     , light = false
     , five = require('johnny-five')
     , board
-    , led;
+    , led
+    , btnSwitch;
 
 
 board = new five.Board();
 
 board.on("ready", function() {
+    btnSwitch = new five.Button(7);
+    btnSwitch.on("up", function() {
+        SetLight(!light);
+    });
 
-    // Create a standard `led` hardware instance
     led = new five.Led({
         pin: 8
     });
